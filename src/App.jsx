@@ -60,7 +60,6 @@ function App() {
     setMode((prev) => (prev === "light" ? "dark" : "light"));
 
   const handleSwapTimezones = () => {
-    // فقط زمان‌زون‌ها را عوض می‌کنیم
     const temp = sourceTimeZone;
     setSourceTimeZone(targetTimeZone);
     setTargetTimeZone(temp);

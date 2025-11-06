@@ -7,7 +7,6 @@ function DateTimePicker({ value, onChange, label }) {
   const formatDateForInput = (date) => {
     if (!date || isNaN(date.getTime())) return "";
 
-    // استفاده از UTC برای جلوگیری از تفسیر منطقه زمانی مرورگر
     const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
     return utcDate.toISOString().slice(0, 16);
   };
@@ -15,9 +14,7 @@ function DateTimePicker({ value, onChange, label }) {
   const handleChange = (event) => {
     const newValue = event.target.value;
     if (newValue) {
-      // ایجاد تاریخ از UTC string
       const utcDate = new Date(newValue + "Z");
-      // تبدیل به timestamp خالص
       const localDate = new Date(
         utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
       );
