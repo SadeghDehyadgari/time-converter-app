@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { TextField, Box, IconButton } from "@mui/material";
 import { CalendarToday } from "@mui/icons-material";
 import { format, parseISO } from "date-fns";
 
 function DateTimePicker({ value, onChange, label }) {
-  const [showNativePicker, setShowNativePicker] = useState(false);
-
   const formatDateForInput = (date) => {
     if (!date || isNaN(date.getTime())) return "";
     return format(date, "yyyy-MM-dd'T'HH:mm");
@@ -22,14 +20,10 @@ function DateTimePicker({ value, onChange, label }) {
   };
 
   const handleCalendarClick = () => {
-    setShowNativePicker(true);
-    // Trigger native picker programmatically
-    setTimeout(() => {
-      const input = document.getElementById("datetime-input");
-      if (input) {
-        input.showPicker();
-      }
-    }, 100);
+    const input = document.getElementById("datetime-input");
+    if (input) {
+      input.showPicker();
+    }
   };
 
   return (
@@ -65,11 +59,17 @@ function DateTimePicker({ value, onChange, label }) {
           },
           "& .MuiOutlinedInput-input": {
             fontSize: "16px",
-            paddingRight: "50px",
+            paddingRight: { xs: "50px", sm: "14px" },
           },
-          '& input[type="datetime-local"]': {
-            // Ensure native picker works on mobile
-            minHeight: "1.5em",
+          '& input[type="datetime-local"]::-webkit-calendar-picker-indicator': {
+            display: { xs: "none", sm: "block" },
+            filter: (theme) =>
+              theme.palette.mode === "dark" ? "invert(1)" : "invert(0)",
+            opacity: 0.7,
+            cursor: "pointer",
+            "&:hover": {
+              opacity: 1,
+            },
           },
         }}
         InputLabelProps={{
@@ -84,6 +84,7 @@ function DateTimePicker({ value, onChange, label }) {
           top: "50%",
           transform: "translateY(-50%)",
           color: "text.secondary",
+          display: { xs: "flex", sm: "none" },
         }}
       >
         <CalendarToday />
