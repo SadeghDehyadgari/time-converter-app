@@ -7,7 +7,7 @@ import DateTimePicker from "./components/DateTimePicker";
 import TimeZoneSelect from "./components/TimeZoneSelect";
 import SwapButton from "./components/SwapButton";
 import ResultDisplay from "./components/ResultDisplay";
-import Footer from "./components/Footer"; // اضافه کردن Footer
+import Footer from "./components/Footer";
 import { convertTime, getTimeDifference } from "./utils/timeConverter";
 
 function App() {
@@ -46,13 +46,11 @@ function App() {
     [mode]
   );
 
-  // Convert time
   const convertedTime = useMemo(
     () => convertTime(sourceDateTime, sourceTimeZone, targetTimeZone),
     [sourceDateTime, sourceTimeZone, targetTimeZone]
   );
 
-  // Time difference
   const timeDifference = useMemo(
     () => getTimeDifference(sourceTimeZone, targetTimeZone),
     [sourceTimeZone, targetTimeZone]
@@ -69,6 +67,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Box
         sx={{
           minHeight: "100vh",
@@ -76,138 +75,121 @@ function App() {
             theme.palette.mode === "light"
               ? "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%)"
               : "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1a1a1a 100%)",
+          py: 4,
+          px: 2,
         }}
       >
-        <CssBaseline />
-        <Box
+        <Container
+          maxWidth="md"
           sx={{
-            minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
-            py: 4,
-            px: 2,
           }}
         >
-          <Container
-            maxWidth="md"
+          <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "space-between",
               alignItems: "center",
-              flex: 1,
+              mb: 4,
+              width: "100%",
+              maxWidth: "800px",
             }}
           >
-            {/* Header */}
-            <Box
+            <Typography
+              variant="h4"
+              component="h1"
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 4,
-                width: "100%",
-                maxWidth: "800px",
-              }}
-            >
-              <Typography
-                variant="h4"
-                component="h1"
-                gutterBottom
-                sx={{
-                  fontWeight: 700,
-                  background: (theme) =>
-                    theme.palette.mode === "light"
-                      ? "linear-gradient(135deg, #6366f1 0%, #ec4899 100%)"
-                      : "linear-gradient(135deg, #8b5cf6 0%, #f472b6 100%)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  m: 0,
-                }}
-              >
-                Timezone Converter
-              </Typography>
-              <ThemeToggle mode={mode} toggleTheme={toggleTheme} />
-            </Box>
-
-            {/* Main converter form */}
-            <Paper
-              elevation={0}
-              sx={{
-                p: 4,
-                mb: 3,
-                borderRadius: 3,
-                width: "100%",
-                maxWidth: "800px",
+                fontWeight: 700,
                 background: (theme) =>
                   theme.palette.mode === "light"
-                    ? "rgba(255, 255, 255, 0.85)"
-                    : "rgba(30, 30, 30, 0.85)",
-                backdropFilter: "blur(20px)",
-                border: (theme) =>
-                  `1px solid ${
-                    theme.palette.mode === "light"
-                      ? "rgba(99, 102, 241, 0.2)"
-                      : "rgba(139, 92, 246, 0.2)"
-                  }`,
-                boxShadow: (theme) =>
-                  theme.palette.mode === "light"
-                    ? "0 4px 20px rgba(99, 102, 241, 0.15)"
-                    : "0 4px 20px rgba(0, 0, 0, 0.4)",
+                    ? "linear-gradient(135deg, #6366f1 0%, #ec4899 100%)"
+                    : "linear-gradient(135deg, #8b5cf6 0%, #f472b6 100%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
               }}
             >
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                <DateTimePicker
-                  value={sourceDateTime}
-                  onChange={setSourceDateTime}
-                  label="Source Date & Time"
-                />
+              Timezone Converter
+            </Typography>
+            <ThemeToggle mode={mode} toggleTheme={toggleTheme} />
+          </Box>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 3,
-                    flexDirection: { xs: "column", sm: "row" },
-                  }}
-                >
-                  <Box sx={{ flex: 1, width: "100%" }}>
-                    <TimeZoneSelect
-                      value={sourceTimeZone}
-                      onChange={setSourceTimeZone}
-                      label="Source Timezone"
-                    />
-                  </Box>
+          <Paper
+            elevation={0}
+            sx={{
+              p: { xs: 3, sm: 4 },
+              mb: 3,
+              borderRadius: 3,
+              width: "100%",
+              maxWidth: "800px",
+              background: (theme) =>
+                theme.palette.mode === "light"
+                  ? "rgba(255, 255, 255, 0.85)"
+                  : "rgba(30, 30, 30, 0.85)",
+              backdropFilter: "blur(20px)",
+              border: (theme) =>
+                `1px solid ${
+                  theme.palette.mode === "light"
+                    ? "rgba(99, 102, 241, 0.2)"
+                    : "rgba(139, 92, 246, 0.2)"
+                }`,
+              boxShadow: (theme) =>
+                theme.palette.mode === "light"
+                  ? "0 4px 20px rgba(99, 102, 241, 0.15)"
+                  : "0 4px 20px rgba(0, 0, 0, 0.4)",
+            }}
+          >
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              <DateTimePicker
+                value={sourceDateTime}
+                onChange={setSourceDateTime}
+                label="Source Date & Time"
+              />
 
-                  <SwapButton onClick={handleSwapTimezones} />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: { xs: 2, sm: 3 },
+                  flexDirection: { xs: "column", sm: "row" },
+                }}
+              >
+                <Box sx={{ flex: 1, width: "100%" }}>
+                  <TimeZoneSelect
+                    value={sourceTimeZone}
+                    onChange={setSourceTimeZone}
+                    label="Source Timezone"
+                  />
+                </Box>
 
-                  <Box sx={{ flex: 1, width: "100%" }}>
-                    <TimeZoneSelect
-                      value={targetTimeZone}
-                      onChange={setTargetTimeZone}
-                      label="Target Timezone"
-                    />
-                  </Box>
+                <SwapButton onClick={handleSwapTimezones} />
+
+                <Box sx={{ flex: 1, width: "100%" }}>
+                  <TimeZoneSelect
+                    value={targetTimeZone}
+                    onChange={setTargetTimeZone}
+                    label="Target Timezone"
+                  />
                 </Box>
               </Box>
-            </Paper>
-
-            {/* Result Display */}
-            <Box sx={{ width: "100%", maxWidth: "800px", mb: 4 }}>
-              <ResultDisplay
-                sourceDateTime={sourceDateTime}
-                sourceTimeZone={sourceTimeZone}
-                targetTimeZone={targetTimeZone}
-                convertedTime={convertedTime}
-                timeDifference={timeDifference}
-              />
             </Box>
+          </Paper>
 
-            {/* Footer */}
-            <Footer />
-          </Container>
-        </Box>
+          <Box sx={{ width: "100%", maxWidth: "800px", mb: 4 }}>
+            <ResultDisplay
+              sourceDateTime={sourceDateTime}
+              sourceTimeZone={sourceTimeZone}
+              targetTimeZone={targetTimeZone}
+              convertedTime={convertedTime}
+              timeDifference={timeDifference}
+            />
+          </Box>
+
+          <Footer />
+        </Container>
       </Box>
     </ThemeProvider>
   );

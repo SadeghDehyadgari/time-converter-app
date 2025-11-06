@@ -1,8 +1,33 @@
-import React from "react";
+// TimeZoneSelect.jsx
+import React, { useState, useEffect } from "react";
 import { Autocomplete, TextField, Chip, Paper } from "@mui/material";
 
 function TimeZoneSelect({ value, onChange, label }) {
+  const [isOpen, setIsOpen] = useState(false);
   const timeZones = Intl.supportedValuesOf("timeZone");
+
+  // Prevent body scroll when dropdown is open on mobile
+  useEffect(() => {
+    if (isOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+
+      // Prevent body scroll
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      return () => {
+        // Restore body scroll
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isOpen]);
 
   return (
     <Autocomplete
@@ -10,6 +35,8 @@ function TimeZoneSelect({ value, onChange, label }) {
       onChange={(event, newValue) => {
         onChange(newValue || "");
       }}
+      onOpen={() => setIsOpen(true)}
+      onClose={() => setIsOpen(false)}
       options={timeZones}
       PaperComponent={(props) => (
         <Paper
