@@ -29,24 +29,32 @@ function DateTimePicker({ value, onChange, label }) {
       sx={{
         "& .MuiOutlinedInput-root": {
           borderRadius: 2,
+          transition: "all 0.2s ease-in-out",
           fontSize: "16px",
-          minHeight: "56px",
+          "&:hover": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "primary.main",
+            },
+          },
+          "&.Mui-focused": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderWidth: 2,
+              borderColor: "primary.main",
+            },
+          },
         },
         "& .MuiInputLabel-root": {
-          fontSize: "16px",
           fontWeight: 500,
+          fontSize: "16px",
         },
         "& .MuiOutlinedInput-input": {
           fontSize: "16px",
-          padding: "16px 14px",
         },
         '& input[type="datetime-local"]::-webkit-calendar-picker-indicator': {
           filter: (theme) =>
             theme.palette.mode === "dark" ? "invert(1)" : "invert(0)",
           opacity: 0.7,
           cursor: "pointer",
-          padding: "8px",
-          margin: "0 4px",
           "&:hover": {
             opacity: 1,
           },
