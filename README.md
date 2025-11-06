@@ -4,7 +4,7 @@ A beautiful and responsive timezone conversion web application built with React 
 
 **Live Demo:** [https://time-converter-app2025-1.vercel.app/](https://time-converter-app2025-1.vercel.app/)
 
-![React](https://img.shields.io/badge/React-18.2.0-blue)  
+![React](https://img.shields.io/badge/React-blue)  
 ![Material-UI](https://img.shields.io/badge/Material--UI-5.14.0-007FFF)  
 ![Moment.js](https://img.shields.io/badge/Moment.js-2.29.4-green)  
 
