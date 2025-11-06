@@ -6,15 +6,24 @@ import { format, parseISO } from "date-fns";
 function DateTimePicker({ value, onChange, label }) {
   const formatDateForInput = (date) => {
     if (!date || isNaN(date.getTime())) return "";
-    return format(date, "yyyy-MM-dd'T'HH:mm");
+
+    // استفاده از UTC برای جلوگیری از تفسیر منطقه زمانی مرورگر
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return utcDate.toISOString().slice(0, 16);
   };
 
   const handleChange = (event) => {
     const newValue = event.target.value;
     if (newValue) {
-      const newDate = parseISO(newValue);
-      if (!isNaN(newDate.getTime())) {
-        onChange(newDate);
+      // ایجاد تاریخ از UTC string
+      const utcDate = new Date(newValue + "Z");
+      // تبدیل به timestamp خالص
+      const localDate = new Date(
+        utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
+      );
+
+      if (!isNaN(localDate.getTime())) {
+        onChange(localDate);
       }
     }
   };

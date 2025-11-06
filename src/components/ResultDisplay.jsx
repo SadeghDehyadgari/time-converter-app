@@ -9,6 +9,14 @@ function ResultDisplay({
   convertedTime,
   timeDifference,
 }) {
+  if (!sourceTimeZone || !targetTimeZone) {
+    return (
+      <Paper sx={{ p: 3, borderRadius: 3 }}>
+        <Typography color="error">Invalid timezone selection</Typography>
+      </Paper>
+    );
+  }
+
   const isSourceDST = isDST(sourceTimeZone);
   const isTargetDST = isDST(targetTimeZone);
 
@@ -20,14 +28,33 @@ function ResultDisplay({
 
     let text = "";
     if (hours > 0) text += `${hours} hour${hours > 1 ? "s" : ""}`;
-    if (minutes > 0) text += ` ${minutes} minute${minutes > 1 ? "s" : ""}`;
+    if (minutes > 0) {
+      if (text) text += " ";
+      text += `${minutes} minute${minutes > 1 ? "s" : ""}`;
+    }
 
     return timeDifference > 0 ? `${text} ahead` : `${text} behind`;
   };
 
   const isOutsideBusinessHours = () => {
-    const targetHour = convertedTime.getHours();
-    return targetHour < 9 || targetHour >= 17;
+    try {
+      const timeString = formatTimeForDisplay(
+        convertedTime,
+        targetTimeZone,
+        false
+      );
+      const hourMatch = timeString.match(/(\d+):/);
+      if (hourMatch) {
+        const hour = parseInt(hourMatch[1]);
+        const isPM = timeString.includes("PM");
+        const adjustedHour =
+          isPM && hour !== 12 ? hour + 12 : isPM && hour === 12 ? 12 : hour;
+        return adjustedHour < 9 || adjustedHour >= 17;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
   };
 
   const currentLocalTime = new Date();
@@ -128,34 +155,6 @@ function ResultDisplay({
             },
           }}
         />
-      </Box>
-
-      {/* Source time */}
-      <Box sx={{ mb: 3 }}>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            fontWeight: 500,
-            mb: 1,
-            "@media (max-width: 600px)": {
-              fontSize: "0.85rem",
-            },
-          }}
-        >
-          Source time:
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            fontWeight: 500,
-            "@media (max-width: 600px)": {
-              fontSize: "0.9rem",
-            },
-          }}
-        >
-          {formatTimeForDisplay(sourceDateTime, sourceTimeZone)}
-        </Typography>
       </Box>
 
       {/* Information sections */}
